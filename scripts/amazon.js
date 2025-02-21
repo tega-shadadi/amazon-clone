@@ -1,4 +1,4 @@
-//Generate HTML
+//Generate HTML for each indiviadual product
 
 let productsHTML=''
 products.forEach((product)=>{
@@ -48,11 +48,46 @@ products.forEach((product)=>{
             Added
           </div>
 
-          <button class="add-to-cart-button button-primary">
+          <button class="add-to-cart-button button-primary js-add-to-cart" data-product-id='${product.id}'>
             Add to Cart
           </button>
         </div>
 
   `
 })
+//display all products in a <div> container
 document.querySelector(".products-grid").innerHTML=productsHTML
+//Add products to cart
+const addButtons=document.querySelectorAll(".js-add-to-cart");
+
+
+addButtons.forEach((button)=>{
+
+  button.addEventListener('click',()=>{
+    const productId=button.dataset.productId
+
+        // Check if the product already exists in the cart
+    let existingItem = cart.find(item => item.productId === productId);
+
+    if (existingItem) {
+      existingItem.quantity += 1; // Increase quantity if found
+    } else {
+      cart.push({
+        productId: productId,
+        quantity: 1
+      });
+    }
+
+    // Save the updated cart to localStorage
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    console.log(cart);
+  });
+
+          
+             console.log(cart)
+            })
+
+
+                 
+
