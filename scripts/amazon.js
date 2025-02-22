@@ -1,5 +1,6 @@
 import {cart} from '../data/cart.js'
 import {products} from '../data/products.js'
+import { addToCart } from '../data/cart.js';
 // Generate HTML for each individual product
 
 let productsHTML = '';
@@ -60,40 +61,28 @@ document.querySelector(".products-grid").innerHTML = productsHTML;
 // Add products to cart
 const addButtons = document.querySelectorAll(".js-add-to-cart");
 
+
+
+function updateQuantity(){
+  let cartQuantity = 0
+    cart.forEach((item)=>{
+      cartQuantity += item.quantity
+    })
+    document.querySelector(".js-cart-quantity").innerHTML=`${cartQuantity}`
+}
+
 let timeoutId;
 //Adding an event listener to the Add to Cart button
 addButtons.forEach((button) => {
   button.addEventListener('click', () => {
     const productId = button.dataset.productId;
-
-    //Getting the selected number of products 
     // Get the correct product container
     const productContainer = button.closest(".product-container");
-
-    let selectedValue=parseInt(productContainer.querySelector(".js-select").value)
+    addToCart(productContainer,productId);
+    updateQuantity();
+     
 
     
-
-    // Check if the product already exists in the cart
-    let existingItem = cart.find(item => item.productId === productId);
-
-    if (existingItem) {
-      existingItem.quantity += selectedValue; // Increase quantity if found
-    } else {
-      cart.push({
-        productId: productId,
-        quantity: selectedValue
-      });
-    }
-
-    // Save the updated cart to localStorage
-    localStorage.setItem("cart", JSON.stringify(cart));
-
-    let cartQuantity = 0
-    cart.forEach((item)=>{
-      cartQuantity += item.quantity
-    })
-    document.querySelector(".js-cart-quantity").innerHTML=`${cartQuantity}`
     //The Added to Cart messsage should disapear after 2 seconds
     clearTimeout(timeoutId);
     timeoutId=setTimeout(()=>{
