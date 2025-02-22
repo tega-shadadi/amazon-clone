@@ -24,7 +24,7 @@ products.forEach((product) => {
       </div>
 
       <div class="product-quantity-container">
-        <select>
+        <select class="js-select">
           <option selected value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -58,19 +58,29 @@ document.querySelector(".products-grid").innerHTML = productsHTML;
 // Add products to cart
 const addButtons = document.querySelectorAll(".js-add-to-cart");
 
+let timeoutId;
+//Adding an event listener to the Add to Cart button
 addButtons.forEach((button) => {
   button.addEventListener('click', () => {
     const productId = button.dataset.productId;
+
+    //Getting the selected number of products 
+    // Get the correct product container
+    const productContainer = button.closest(".product-container");
+
+    let selectedValue=parseInt(productContainer.querySelector(".js-select").value)
+
+    
 
     // Check if the product already exists in the cart
     let existingItem = cart.find(item => item.productId === productId);
 
     if (existingItem) {
-      existingItem.quantity += 1; // Increase quantity if found
+      existingItem.quantity += selectedValue; // Increase quantity if found
     } else {
       cart.push({
         productId: productId,
-        quantity: 1
+        quantity: selectedValue
       });
     }
 
@@ -82,7 +92,14 @@ addButtons.forEach((button) => {
       cartQuantity += item.quantity
     })
     document.querySelector(".js-cart-quantity").innerHTML=`${cartQuantity}`
-
+    //The Added to Cart messsage should disapear after 2 seconds
+    clearTimeout(timeoutId);
+    timeoutId=setTimeout(()=>{
+      productContainer.querySelector(".added-to-cart").classList.remove("show-added-to-cart")
+    },2000)
+   
+    productContainer.querySelector(".added-to-cart").classList.add("show-added-to-cart")
+    
     console.log(cart);
   });
 });
