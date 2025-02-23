@@ -38,6 +38,7 @@ function renderCartItems() {
 
   cartItems.forEach((item) => {
     cartHTML += `
+          <div class="cart-item-container js-cart-item-container">
             <div class="delivery-date">
               Delivery date: Tuesday, June 21
             </div>
@@ -112,11 +113,12 @@ function renderCartItems() {
               </div>
             </div>
           </div>
+          </div>
 
     `;
   });
 
-  document.querySelector(".js-cart-item-container").innerHTML = cartHTML;
+  document.querySelector(".js-order-summary").innerHTML = cartHTML;
 }
 
 // Call the function to render the cart items
