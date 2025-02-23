@@ -91,7 +91,7 @@ addButtons.forEach((button) => {
    
     productContainer.querySelector(".added-to-cart").classList.add("show-added-to-cart")
     
-    console.log(cart);
+    
   });
 });
 
