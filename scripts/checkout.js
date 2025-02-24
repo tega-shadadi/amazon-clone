@@ -39,7 +39,7 @@ function renderCartItems() {
 
   cartItems.forEach((item) => {
     cartHTML += `
-          <div class="cart-item-container js-cart-item-container">
+          <div class="cart-item-container js-cart-item-container js-cart-item-container-${item.id}">
             <div class="delivery-date">
               Delivery date: Tuesday, June 21
             </div>
@@ -125,13 +125,16 @@ function renderCartItems() {
 renderCartItems();
 
   const deleteButtons=document.querySelectorAll(".js-delete-link")
-
+//Adding an event listener for delete button
   deleteButtons.forEach((button)=>{ 
     button.addEventListener('click',()=>{
       console.log("event listener working")
       console.log(button.dataset.productId)
       deleteItem(button.dataset.productId);
-      renderCartItems();
+      const container=document.querySelector(`.js-cart-item-container-${button.dataset.productId}`);
+      container.remove() 
+
+      //renderCartItems();
     })
   })
 
@@ -141,7 +144,7 @@ renderCartItems();
 
 
 
-//Adding an event listener for delete button
+
 
 
 
