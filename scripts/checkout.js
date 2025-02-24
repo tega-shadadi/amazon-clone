@@ -1,6 +1,6 @@
-import { cart } from "../data/cart.js";
+import { cart,deleteItem } from "../data/cart.js";
 import { products } from "../data/products.js";
-import { formatCurrency } from "./utils/money.js"
+import { formatCurrency } from "./utils/money.js";
 
 // Array to store selected products with their quantities
 const cartItems = [];
@@ -14,7 +14,7 @@ cart.forEach((cartItem) => {
 
     //search in products
     const product=products.find((product)=>id===product.id);
-    console.log(product)   
+    //console.log(product)   
     //return that product
     //push it in cartItems along with cart.quantity
     if (product) {
@@ -62,7 +62,7 @@ function renderCartItems() {
                   <span class="update-quantity-link link-primary">
                     Update
                   </span>
-                  <span class="delete-quantity-link link-primary">
+                  <span class="delete-quantity-link link-primary js-delete-link" data-product-id="${item.id}">
                     Delete
                   </span>
                 </div>
@@ -121,6 +121,28 @@ function renderCartItems() {
 
   document.querySelector(".js-order-summary").innerHTML = cartHTML;
 }
-
 // Call the function to render the cart items
 renderCartItems();
+
+  const deleteButtons=document.querySelectorAll(".js-delete-link")
+
+  deleteButtons.forEach((button)=>{ 
+    button.addEventListener('click',()=>{
+      console.log("event listener working")
+      console.log(button.dataset.productId)
+      deleteItem(button.dataset.productId);
+      renderCartItems();
+    })
+  })
+
+
+
+
+
+
+
+//Adding an event listener for delete button
+
+
+
+

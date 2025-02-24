@@ -1,4 +1,4 @@
-export const cart = [];
+export let cart = [];
 
 // Retrieve the cart from localStorage at the beginning
 const storedCart = localStorage.getItem("cart");
@@ -33,7 +33,16 @@ export function addToCart(productContainer, productId) {
 }
 
 console.log("Initial cart state:", cart);
+//function to delete item in the cart
 
+const newCart=[]
+
+export function deleteItem(productId) {
+  cart = cart.filter(item => item.productId !== productId);
+  // Save the updated cart to localStorage
+  localStorage.setItem('cart', JSON.stringify(cart));
+  console.log("Item deleted and cart updated:", cart);
+}
 
 
 
