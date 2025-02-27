@@ -13,6 +13,18 @@
   margin-left: auto;
   margin-right: auto;
 }
+.quantity-input{
+  width: 30px;
+}
+
+
+.quantity-input,.save-quantity-link{
+  display: none
+}
+ 
+.quantity-input-appear,.save-quantity-link-appear{
+  display:inline
+}
 
 .page-title {
   font-weight: 700;

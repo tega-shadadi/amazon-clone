@@ -1,7 +1,12 @@
-import {cart} from '../data/cart.js'
+import {cart,addToCart} from '../data/cart.js'
 import {products} from '../data/products.js'
-import { addToCart } from '../data/cart.js';
 import { formatCurrency } from './utils/money.js';
+
+//update cart Quantity in the top corner
+var cartQuantityTopRight=''
+updateQuantity();
+
+
 // Generate HTML for each individual product
 
 let productsHTML = '';
@@ -64,13 +69,17 @@ const addButtons = document.querySelectorAll(".js-add-to-cart");
 
 
 
+
 function updateQuantity(){
   let cartQuantity = 0
     cart.forEach((item)=>{
       cartQuantity += item.quantity
+      cartQuantityTopRight=cartQuantity
     })
     document.querySelector(".js-cart-quantity").innerHTML=`${cartQuantity}`
 }
+
+
 
 let timeoutId;
 //Adding an event listener to the Add to Cart button
@@ -95,7 +104,3 @@ addButtons.forEach((button) => {
     
   });
 });
-
-
-
-

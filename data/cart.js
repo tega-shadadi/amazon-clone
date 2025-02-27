@@ -19,11 +19,15 @@ export function addToCart(productContainer, productId) {
   let existingItem = cart.find(item => item.productId === productId);
 
   if (existingItem) {
-    existingItem.quantity += selectedValue; // Increase quantity if found
+    existingItem.quantity += selectedValue;
+     // Increase quantity if found
+     
   } else {
     cart.push({
       productId: productId,
-      quantity: selectedValue
+      quantity: selectedValue,
+      deliveryOptionId: '1'
+
     });
   }
 
