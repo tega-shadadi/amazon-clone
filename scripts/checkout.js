@@ -4,9 +4,7 @@ import { formatCurrency } from "./utils/money.js";
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js'
 import {deliveryOptions} from '../data/deliveryOptions.js'
 
-const today=dayjs()
-const deliveryDate=today.add(7,'days');
-console.log(deliveryDate.format('dddd, MMMM D'))
+
 //update the quantity number from the cart and display it the top at the loading of a page
 updateQuantity()
 // Array to store selected products with their quantities
@@ -18,7 +16,7 @@ const cartItems = [];
 cart.forEach((cartItem) => {
     //get the Id
     const id=cartItem.productId
-
+    console.log(cartItem)
     //search in products
     const product=products.find((product)=>id===product.id);
     //console.log(product)   
@@ -28,7 +26,8 @@ cart.forEach((cartItem) => {
       // Create a new object that includes the product details and the quantity
       const productWithQuantity = {
         ...product,
-        quantity: cartItem.quantity
+        quantity: cartItem.quantity,
+        deliveryOptionId: cartItem.deliveryOptionId || deliveryOptions[0].id 
       };
   
       // Push the new object into the cartItems array
@@ -44,11 +43,33 @@ console.log(cartItems); // Check if the products are correctly matched
 function renderCartItems() {
   let cartHTML = "";
 
+
   cartItems.forEach((item) => {
+
+    const deliveryOptionId = item.deliveryOptionId;
+
+    let deliveryOption;
+
+    deliveryOptions.forEach((option)=>{
+      if (option.id === deliveryOptionId){
+        deliveryOption = option;
+      }
+    })
+    //calculating the date
+    const today = dayjs();
+    const deliveryDate = today.add(
+      deliveryOption.deliveryDays, 'days'
+
+    );
+    const dateString = deliveryDate.format(
+      'dddd, MMMM D'
+    );
+   
+
     cartHTML += `
           <div class="cart-item-container js-cart-item-container js-cart-item-container-${item.id}">
             <div class="delivery-date">
-              Delivery date: Tuesday, June 21
+              Delivery date: ${dateString}
             </div>
 
             <div class="cart-item-details-grid">
@@ -78,13 +99,11 @@ function renderCartItems() {
               
 
               <div class="delivery-options">
-      <div class="delivery-options-title">
-            Choose a delivery option:
-        </div>
-                
-                ${deliveryOptionsHTML(item)}
-            
-          </div>
+                <div class="delivery-options-title">
+                  Choose a delivery option:
+                </div>               
+                ${deliveryOptionsHTML(item)}          
+              </div>
           </div>
        </div>
     `;
@@ -92,6 +111,7 @@ function renderCartItems() {
 
   document.querySelector(".js-order-summary").innerHTML = cartHTML;
 }
+
 // Call the function to render the cart items
 renderCartItems();
 
@@ -163,14 +183,16 @@ function deliveryOptionsHTML(item){
     );
     const priceString = deliveryOption.priceCents === 0 ? 'FREE' : `$${formatCurrency(deliveryOption.priceCents)} -`;
 
-
+    const isChecked = deliveryOption.id === item.deliveryOptionId
+    console.log(item)
     html+=
     `
             
         <div class="delivery-option">
-            <input type="radio" checked
+            <input type="radio" ${isChecked?'checked':''}
                class="delivery-option-input"
               name="delivery-option-${item.id}">
+               
                   <div>
                     <div class="delivery-option-date">
                       ${dateString}

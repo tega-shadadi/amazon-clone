@@ -28,7 +28,18 @@ export function addToCart(productContainer, productId) {
       quantity: selectedValue,
       deliveryOptionId: '1'
 
-    });
+    },
+  {
+   productId:'bc2847e9-5323-403f-b7cf-57fde044a955',
+   quantity: 2,
+   deliveryOptionId: '2'
+  },
+  {
+    productId:'aaa65ef3-8d6f-4eb3-bc9b-a6ea49047d8f',
+    quantity: 3,
+    deliveryOptionId:'3'
+   },
+);
   }
 
   // Save the updated cart to localStorage
