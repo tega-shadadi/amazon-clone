@@ -1,5 +1,5 @@
-import { cart,deleteItem } from "../data/cart.js";
-import { products } from "../data/products.js";
+import { cart,deleteItem,cartItems,updateDeliveryOption } from "../data/cart.js";
+
 import { formatCurrency } from "./utils/money.js";
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js'
 import {deliveryOptions} from '../data/deliveryOptions.js'
@@ -8,36 +8,6 @@ import {deliveryOptions} from '../data/deliveryOptions.js'
 //update the quantity number from the cart and display it the top at the loading of a page
 updateQuantity()
 // Array to store selected products with their quantities
-const cartItems = [];
-
-
-//Get items from cart and search products array in ../data/products.js using id 
-//and return them and stored them to cartItems array but with the quantity from the cart
-cart.forEach((cartItem) => {
-    //get the Id
-    const id=cartItem.productId
-    console.log(cartItem)
-    //search in products
-    const product=products.find((product)=>id===product.id);
-    //console.log(product)   
-    //return that product
-    //push it in cartItems along with cart.quantity
-    if (product) {
-      // Create a new object that includes the product details and the quantity
-      const productWithQuantity = {
-        ...product,
-        quantity: cartItem.quantity,
-        deliveryOptionId: cartItem.deliveryOptionId || deliveryOptions[0].id 
-      };
-  
-      // Push the new object into the cartItems array
-      cartItems.push(productWithQuantity);
-    }
-
-})
-
-// Now `cartItems` contains the selected products along with their quantities
-console.log(cartItems); // Check if the products are correctly matched
 
 // Function to render cart items into HTML
 function renderCartItems() {
@@ -110,6 +80,21 @@ function renderCartItems() {
   });
 
   document.querySelector(".js-order-summary").innerHTML = cartHTML;
+
+  // Now, select the newly created elements and attach event listeners
+  const deliveryOptionElements = document.querySelectorAll(".js-delivery-option");
+
+  deliveryOptionElements.forEach((element) => {
+    element.addEventListener("click", () => {
+      console.log(element.dataset.productId);
+      const productId = element.dataset.productId;
+      const deliveryOptionId = element.dataset.deliveryOptionId;
+      updateDeliveryOption(productId, deliveryOptionId);
+      renderCartItems(); // Re-render the cart to reflect the changes
+    });
+  });
+
+
 }
 
 // Call the function to render the cart items
@@ -184,11 +169,15 @@ function deliveryOptionsHTML(item){
     const priceString = deliveryOption.priceCents === 0 ? 'FREE' : `$${formatCurrency(deliveryOption.priceCents)} -`;
 
     const isChecked = deliveryOption.id === item.deliveryOptionId
-    console.log(item)
+    
     html+=
     `
             
-        <div class="delivery-option">
+        <div class="delivery-option js-delivery-option"
+        data-product-id="${item.id}"
+        data-delivery-option-id="${deliveryOption.id}"
+
+        >
             <input type="radio" ${isChecked?'checked':''}
                class="delivery-option-input"
               name="delivery-option-${item.id}">
@@ -206,3 +195,13 @@ function deliveryOptionsHTML(item){
   })
   return html
 }
+/*
+document.querySelectorAll('.js-delivery-option').forEach((element)=>{
+  element.addEventListener('click', ()=>{
+    //Shorthand property just for practice
+    console.log(element.dataset.productId)
+    const productId = element.dataset.productId;
+    const deliveryOptionId = element.dataset.deliveryOptionId;
+    updateDeliveryOption(productId, deliveryOptionId);
+  })
+})*/
