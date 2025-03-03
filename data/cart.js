@@ -1,4 +1,5 @@
-import {products} from './products.js';
+import {products, getProduct} from './products.js';
+
 
 
 
@@ -83,8 +84,9 @@ cart.forEach((cartItem) => {
     const id=cartItem.productId
     //console.log(cartItem)
     //search in products
-    const product=products.find((product)=>id===product.id);
-       
+    
+    const product=getProduct(id);
+        
     //return that product
     //push it in cartItems along with cart.quantity
     if (product) {
