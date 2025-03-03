@@ -1,4 +1,7 @@
-import {products} from './products.js'
+import {products} from './products.js';
+
+
+
 export let cart = [
   {
    productId:'bc2847e9-5323-403f-b7cf-57fde044a955',
@@ -78,7 +81,7 @@ export const cartItems = [];
 cart.forEach((cartItem) => {
     //get the Id
     const id=cartItem.productId
-    console.log(cartItem)
+    //console.log(cartItem)
     //search in products
     const product=products.find((product)=>id===product.id);
        
@@ -99,13 +102,13 @@ cart.forEach((cartItem) => {
 })
 
 // Now `cartItems` contains the selected products along with their quantities
-console.log(cartItems); // Check if the products are correctly matched
+//console.log(cartItems); // Check if the products are correctly matched
 
 
 
 export function updateDeliveryOption(productId, deliveryOptionId){
   
-      
+     
       let matchingItem;
       //search in products
       cart.forEach((cartItem)=>{
@@ -118,8 +121,21 @@ export function updateDeliveryOption(productId, deliveryOptionId){
        
       matchingItem.deliveryOptionId = deliveryOptionId;
 
+     // Rebuild cartItems to reflect the changes
+      cartItems.length = 0; // Clear the old data
+      cart.forEach(cartItem => {
+        const product = products.find(product => product.id === cartItem.productId);
+        if (product) {
+          cartItems.push({
+            ...product,
+            quantity: cartItem.quantity,
+            deliveryOptionId: cartItem.deliveryOptionId
+          });
+        }
+      })
+
+      
       saveToStorage()
 }
 
 
-//console.log(cartItem)
