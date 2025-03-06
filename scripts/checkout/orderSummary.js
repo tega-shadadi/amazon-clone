@@ -2,6 +2,7 @@ import {cart,deleteItem,cartItems,updateDeliveryOption } from "../../data/cart.j
 import { formatCurrency } from "../utils/money.js";
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js'
 import {deliveryOptions, getDeliveryOption} from '../../data/deliveryOptions.js'
+import {renderPaymentSummary} from './paymentSummary.js'
 
 console.log (cart)
 export function renderOrderSummary(){ 
@@ -89,6 +90,7 @@ export function renderOrderSummary(){
           updateDeliveryOption(productId, deliveryOptionId);
            // Re-render the cart to reflect the changes
            renderOrderSummary();
+           renderPaymentSummary();
         });
       });
 
@@ -107,6 +109,7 @@ export function renderOrderSummary(){
           deleteItem(button.dataset.productId);
           const container=document.querySelector(`.js-cart-item-container-${button.dataset.productId}`);
           container.remove()
+          renderPaymentSummary();
     //Updating the checkout items at the top every after deleting an item
           updateQuantity()
 
