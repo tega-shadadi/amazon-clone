@@ -1,10 +1,10 @@
 import {cart,deleteItem,cartItems,updateDeliveryOption } from "../../data/cart.js";
 import { formatCurrency } from "../utils/money.js";
-import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js'
+//import {dayjs} from '../../scripts/dayjs.min.js'
 import {deliveryOptions, getDeliveryOption} from '../../data/deliveryOptions.js'
 import {renderPaymentSummary} from './paymentSummary.js'
 
-console.log (cart)
+console.log(dayjs().format())
 export function renderOrderSummary(){ 
   
     //update the quantity number from the cart and display it the top at the loading of a page
@@ -15,7 +15,7 @@ export function renderOrderSummary(){
     function renderCartItems() {
       let cartHTML = "";
 
-
+      console.log(cartItems)
       cartItems.forEach((item) => {
 
         const deliveryOptionId = item.deliveryOptionId;
@@ -198,4 +198,5 @@ export function renderOrderSummary(){
       return html
       
     }
+    console.log('renderOrderSummarry called Successfully')
 }

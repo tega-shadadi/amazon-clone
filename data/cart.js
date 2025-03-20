@@ -79,29 +79,33 @@ export const cartItems = [];
 
 //Get items from cart and search products array in ../data/products.js using id 
 //and return them and stored them to cartItems array but with the quantity from the cart
-cart.forEach((cartItem) => {
-    //get the Id
-    const id=cartItem.productId
-    //console.log(cartItem)
-    //search in products
-    
-    const product=getProduct(id);
+export function populateCartItems(){
+  cart.forEach((cartItem) => {
+      //get the Id
+      const id=cartItem.productId
+      //console.log(cartItem)
+      //search in products
+      
+      const product=getProduct(id);
         
-    //return that product
-    //push it in cartItems along with cart.quantity
-    if (product) {
-      // Create a new object that includes the product details and the quantity
-      const productWithQuantity = {
-        ...product,
-        quantity: cartItem.quantity,
-        deliveryOptionId: cartItem.deliveryOptionId || deliveryOptions[0].id 
-      };
-  
-      // Push the new object into the cartItems array
-      cartItems.push(productWithQuantity);
-    }
+      //return that product
+      //push it in cartItems along with cart.quantity
+      if (product) {
+        // Create a new object that includes the product details and the quantity
+        const productWithQuantity = {
+          ...product,
+          quantity: cartItem.quantity,
+          deliveryOptionId: cartItem.deliveryOptionId || deliveryOptions[0].id 
+        };
+    
+        // Push the new object into the cartItems array
+        cartItems.push(productWithQuantity);
+        
+      }
 
-})
+  })
+}
+console.log('cart items populated:', cartItems);
 
 // Now `cartItems` contains the selected products along with their quantities
 //console.log(cartItems); // Check if the products are correctly matched

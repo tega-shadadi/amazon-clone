@@ -3,7 +3,7 @@ export function getProduct(id){
   const product=products.find((product)=>id===product.id);
   return product
 } 
-
+//*
 class Product{
   id;
   image;
@@ -14,7 +14,7 @@ class Product{
   constructor(productDetails){
     this.id = productDetails.id;
     this.image = productDetails.image;
-    this.name = productDetails.image;
+    this.name = productDetails.name;
     this.rating = productDetails.rating;
     this.priceCents = productDetails.priceCents;
   }
@@ -28,8 +28,8 @@ class Product{
   }
 
 }
-
-
+/*/
+/* 
 
 
 export const products = [
@@ -694,3 +694,28 @@ export const products = [
 ].map((productDetails) => {
   return new Product(productDetails);
 });
+*/ 
+
+export let products = [];
+
+export function loadProducts(fun){
+  const xhr = new XMLHttpRequest();
+
+  xhr.addEventListener('load', () => {
+    products = JSON.parse(xhr.response).map((productDetails) => {
+      return new Product(productDetails);
+    });
+    console.log('load products');
+    //console.log(products)
+    
+    fun();
+
+    
+  });
+  xhr.open('GET', 'https://supersimplebackend.dev/products');
+  xhr.send();
+
+  
+
+}
+//loadProducts();
